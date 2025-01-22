@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-username = (By.NAME, 'user-name')
+username = (By.ID, 'user-name')
 password = (By.NAME, 'password')
 login_button = (By.ID, 'login-button')
 
@@ -17,4 +17,3 @@ class LoginPage:
 
     def get_login_button(self):
         return self.driver.find_element(login_button[0], login_button[1])
-

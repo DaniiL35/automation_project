@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Enviroment>
+    <!--general -->
+    <WaitTime>2</WaitTime>
+
+
+    <!--Web-->
+    <Browser>Chrome</Browser>
+    <URL>https://www.saucedemo.com/</URL>
+    <Username>standard_user</Username>
+    <Password>secret_sauce</Password>
+
+</Enviroment>
