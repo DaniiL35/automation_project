@@ -10,4 +10,7 @@
     <Username>standard_user</Username>
     <Password>secret_sauce</Password>
 
+    <!--verification-->
+    <softdisplayedtime>5</softdisplayedtime>
+
 </Enviroment>

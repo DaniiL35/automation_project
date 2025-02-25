@@ -1,3 +1,5 @@
+import time
+
 import page_objects.web_objects.inventory_page as inv_pg
 import utilities.common_ops
 from extensions.ui_actions import UiActions
@@ -19,3 +21,17 @@ class WebFlows:
         utilities.common_ops.wait(For.ELEMENT_DISPLAYED, inv_pg.title)
         actual = page.web_inventory.get_main_title().text
         Verifications.verify_equals(expected, actual)
+
+    @staticmethod
+    def verify_menu_buttons_flow():
+        elems_closed = [
+            page.web_upper_menu.get_cart_icon(),
+            page.web_upper_menu.get_burger_menu(), ]
+        elems_open = [
+            page.web_upper_menu.get_all_items(),
+            page.web_upper_menu.get_about(),
+            page.web_upper_menu.get_logout(),
+            page.web_upper_menu.get_reset()]
+        Verifications.soft_assert(elems_closed)
+        UiActions.click(page.web_upper_menu.get_burger_menu())
+        Verifications.soft_assert(elems_open)
