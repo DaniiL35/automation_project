@@ -10,9 +10,15 @@ import time
 class Test_web:
 
     def test_verify_login(self):
-        time.sleep(2)  # should be removed - This is a workaround for the slow loading of the page
         WebFlows.login_flow(get_data('Username'), get_data('Password'))
         WebFlows.verify_title("Products")
 
     def test_verify_menu_buttons(self):
         WebFlows.verify_menu_buttons_flow()
+
+    def test_verify_products(self):
+        WebFlows.verifiy_products_names_and_desc()
+
+    def test_verify_product_page(self):
+        WebFlows.verify_product_page_details()
+

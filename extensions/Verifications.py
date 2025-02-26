@@ -8,13 +8,16 @@ class Verifications:
     @staticmethod
     def verify_equals(expected, actual):
         assert expected == actual, f'Expected {expected} but got {actual}'
-    #
+
+    def soft_assert_equals(expected, actual):
+        soft_assert(expected == actual, f'Expected {expected} but got {actual}')
+
     @staticmethod
     def is_displayed(element):
         assert element.is_displayed(), f'Element {element.text} is not displayed'
 
-    def soft_assert(elems):
-        timeout = int(get_data("softdisplayedtime"))  # get timeout from config file
+    def soft_assert_displayed(elems):
+        timeout = int(get_data("softdisplayedtime"))  #
         for elem in elems:
             try:
                 WebDriverWait(elem.parent, timeout).until(EC.visibility_of(elem))

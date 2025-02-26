@@ -9,6 +9,11 @@ def get_data(node_name):
     root = ET.parse(r'/Users/danielshimon/PycharmProjects/automation_final_project/configuration/data.xml').getroot()
     return root.find(".//" + node_name).text
 
+def get_products_data(node_name):
+    root = ET.parse(r'/Users/danielshimon/PycharmProjects/automation_final_project/configuration/products_data.xml').getroot()
+    return root.find(".//" + node_name).text
+
+
 
 def wait(for_element, elem):
     if for_element == 'e lement_exist':

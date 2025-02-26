@@ -6,6 +6,7 @@ all_items = (By.ID, "inventory_sidebar_link")
 about = (By.ID, "about_sidebar_link")
 logout = (By.ID), "logout_sidebar_link"
 reset = (By.ID), "reset_sidebar_link"
+close = (By.ID), "react-burger-cross-btn"
 
 
 
@@ -31,3 +32,6 @@ class UppermenuPage:
 
     def get_reset(self):
         return self.driver.find_element(reset[0], reset[1])
+
+    def get_close_button(self):
+        return self.driver.find_element(close[0], close[1])
