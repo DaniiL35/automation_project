@@ -29,3 +29,5 @@ class UiActions:
     @staticmethod
     def clear(element):
         element.clear()
+
+

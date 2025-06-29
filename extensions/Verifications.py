@@ -48,3 +48,8 @@ class Verifications:
                 print(
                     f'Soft display failed for element: {elem.tag_name} | Text: {elem.text} | Location: {elem.location}')
             raise AssertionError("Soft Display failed")
+
+
+    @staticmethod
+    def verify_number_of_elems(elems,size):
+        assert len(elems) == size, f'Expected {size} elements but got {len(elems)}'

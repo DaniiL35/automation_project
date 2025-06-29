@@ -9,6 +9,15 @@
     <URL>https://www.saucedemo.com/</URL>
     <Username>standard_user</Username>
     <Password>secret_sauce</Password>
+    <csvfile>../ddt/products.csv</csvfile>
+
+
+
+
+    <!--URLS-->
+    <CartURL>https://www.saucedemo.com/cart.html</CartURL>
+    <CheckoutCompleteURL>https://www.saucedemo.com/checkout-complete.html</CheckoutCompleteURL>
+
 
     <!--verification-->
     <softdisplayedtime>5</softdisplayedtime>

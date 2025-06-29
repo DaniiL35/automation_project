@@ -18,9 +18,11 @@ class InventoryPage:
     def get_products_description(self):
         return self.driver.find_elements(products_description[0], products_description[1])
 
+    def get_product_description(self, index):
+        return self.get_products_description()[index]
+
     def get_prices(self):
         return self.driver.find_elements(prices[0], prices[1])
 
-    def get_products_URL(self):
-        return self.driver.find_elements
+
 

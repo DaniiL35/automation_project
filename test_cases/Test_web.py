@@ -1,9 +1,9 @@
 import pytest
-
+import random
 from utilities.common_ops import get_data
-from utilities.manage_pages import web_upper_menu
 from workflows.web_flows import WebFlows
-import time
+
+r_ID = random.randint(0,5)
 
 
 @pytest.mark.usefixtures('init_web_driver')
@@ -21,4 +21,13 @@ class Test_web:
 
     def test_verify_product_page(self):
         WebFlows.verify_product_page_details()
+
+    def test_cart(self):
+        WebFlows.add_and_verifiy_product_in_cart(r_ID)
+
+    def test_checkout(self):
+        WebFlows.checkout_proccess("test1","test2","1231")
+
+    #def teardown_method(self):
+        #WebFlows.return_home()
 

@@ -1,12 +1,14 @@
 import time
-from selenium.webdriver import ActionChains
 import pytest
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from utilities.common_ops import get_data
 from utilities.manage_pages import ManagePages
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from selenium.webdriver.chrome.options import Options
+
 
 driver = None
 action = None
@@ -39,11 +41,17 @@ def get_web_driver():
         raise Exception("Wrong Input, Unrecognized Browser")
     return driver
 
-
 def get_chrome():
-    chrome_driver = webdriver.Chrome(ChromeDriverManager().install())
-    return chrome_driver
+    chrome_options = Options()
+    chrome_options.add_argument('--disable-save-password-bubble')
+    chrome_options.add_experimental_option('prefs', {
+        'credentials_enable_service': False,
+        'profile.password_manager_enabled': False,
+        'profile.password_manager_leak_detection': False
 
+    })
+    chrome_driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    return chrome_driver
 
 def get_firefox():
     firefox_driver = webdriver.Firefox(GeckoDriverManager().install())
