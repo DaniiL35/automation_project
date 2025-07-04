@@ -72,7 +72,7 @@ class WebFlows:
         UiActions.click(page.product_page.get_buy_button())
         UiActions.click(page.web_upper_menu.get_cart_icon())
         names = page.cart_page.get_items_names()
-        Verifications.verify_equals(names[0].text,data[ID]["Product Name"].strip())
+        Verifications.verify_equals(names[0].text, data[ID]["Product Name"].strip())
 
     @staticmethod
     def checkout_proccess(firstname, lastname, postalcode):

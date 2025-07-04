@@ -28,6 +28,11 @@ class Test_web:
     def test_checkout(self):
         WebFlows.checkout_proccess("test1","test2","1231")
 
+
+    # upcoming tests
+    # def test_logout(self):
+    # def test_login_diffrent_user
+
     #def teardown_method(self):
         #WebFlows.return_home()
 

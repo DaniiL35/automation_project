@@ -3,11 +3,13 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from utilities.common_ops import get_data
+from utilities.event_listener import EventListener
 from utilities.manage_pages import ManagePages
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
 
 
 driver = None
@@ -16,7 +18,8 @@ action = None
 
 @pytest.fixture(scope='class')
 def init_web_driver(request):
-    globals()['driver'] = get_web_driver()
+    edriver = get_web_driver()
+    globals()['driver'] = EventFiringWebDriver(edriver, EventListener())
     driver.maximize_window()
     driver.implicitly_wait(int(get_data("WaitTime")))
     driver.get(get_data('URL'))
