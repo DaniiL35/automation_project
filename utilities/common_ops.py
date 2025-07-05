@@ -5,12 +5,20 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import test_cases.conftest as conf
 import xml.etree.ElementTree as ET
+from pathlib import Path
+import os
 
+
+
+
+from pathlib import Path
+import xml.etree.ElementTree as ET
 
 def get_data(node_name, file_name='data.xml'):
-    root = ET.parse(
-        fr'/Users/danielshimon/PycharmProjects/automation_final_project/configuration/{file_name}').getroot()
-    return root.find(".//" + node_name).text
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    file_path = os.path.join(BASE_DIR, "configuration", file_name)
+    root = ET.parse(file_path).getroot()
+    return root.find(f".//{node_name}").text
 
 
 # function to read csv files
