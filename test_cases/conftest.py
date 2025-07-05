@@ -67,3 +67,15 @@ def get_firefox():
 def get_edge():
     edge_driver = webdriver.Edge(EdgeChromiumDriverManager(log_level=20).install())  # log_level = 20 (bug fix)
     return edge_driver
+
+
+# catch exection and take screenshot
+def pytest_exception_interact(node, call, report):
+    if report.failed:
+        if globals()['driver'] is not None:
+            screenshot = globals()['driver'].get_screenshot_as_png()
+            allure.attach(
+                screenshot,
+                name=f"screenshot_{get_time_stamp()}",
+                attachment_type=allure.attachment_type.PNG
+            )

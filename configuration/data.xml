@@ -2,8 +2,6 @@
 <Enviroment>
     <!--general -->
     <WaitTime>2</WaitTime>
-    <ScreenshotPath>./../allure-screen-shots</ScreenshotPath>
-
 
     <!--Web-->
     <Browser>Chrome</Browser>
