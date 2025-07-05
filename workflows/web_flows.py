@@ -1,5 +1,5 @@
 import time
-
+import allure
 import page_objects.web_objects.inventory_page as inv_pg
 import utilities.common_ops
 from extensions.ui_actions import UiActions
@@ -11,18 +11,21 @@ from utilities.common_ops import get_data as GD, read_csv as RC, For
 class WebFlows:
 
     @staticmethod
+    @allure.step("login to the website")
     def login_flow(username, password):
         UiActions.input_text(page.web_login.get_username(), username)
         UiActions.input_text(page.web_login.get_password(), password)
         UiActions.click(page.web_login.get_login_button())
 
     @staticmethod
+    @allure.step("verify website title ")
     def verify_title(expected):
         utilities.common_ops.wait(For.ELEMENT_DISPLAYED, inv_pg.title)
         actual = page.web_inventory.get_main_title().text
         Verifications.verify_equals(expected, actual)
 
     @staticmethod
+    @allure.step("verify menu buttons buttons flow")
     def verify_menu_buttons_flow():
         elems_closed = [
             page.web_upper_menu.get_cart_icon(),
@@ -38,6 +41,7 @@ class WebFlows:
         UiActions.click(page.web_upper_menu.get_close_button())
 
     @staticmethod
+    @allure.step("verify products names and descriptions at main page ")
     def verifiy_products_names_and_desc():
         products_names = page.web_inventory.get_products()
         products_desc = page.web_inventory.get_products_description()
@@ -49,6 +53,7 @@ class WebFlows:
             Verifications.verify_equals(expected_desc, products_desc[i].text.strip())
 
     @staticmethod
+    @allure.step("verify product page details")
     def verify_product_page_details():
         products_list = page.web_inventory.get_products()
         for i in range(len(products_list)):
@@ -75,6 +80,7 @@ class WebFlows:
         Verifications.verify_equals(names[0].text, data[ID]["Product Name"].strip())
 
     @staticmethod
+    @allure.step("checkout process")
     def checkout_proccess(firstname, lastname, postalcode):
         if utilities.common_ops.get_url() == GD('CartURL'):
             UiActions.click(page.cart_page.get_checkout_button())
@@ -86,6 +92,7 @@ class WebFlows:
         Verifications.verify_equals(utilities.common_ops.get_url(), GD("CheckoutCompleteURL"))
 
     @staticmethod
+    @allure.step("return to home page")
     def return_home():
         UiActions.click(page.web_upper_menu.get_burger_menu())
         UiActions.click(page.web_upper_menu.get_all_items())

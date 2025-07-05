@@ -1,8 +1,10 @@
 import time
+
+import allure
 import pytest
 from selenium import webdriver
 from selenium.webdriver import ActionChains
-from utilities.common_ops import get_data
+from utilities.common_ops import get_data, get_time_stamp
 from utilities.event_listener import EventListener
 from utilities.manage_pages import ManagePages
 from webdriver_manager.chrome import ChromeDriverManager
@@ -10,7 +12,6 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
-
 
 driver = None
 action = None
@@ -44,6 +45,7 @@ def get_web_driver():
         raise Exception("Wrong Input, Unrecognized Browser")
     return driver
 
+
 def get_chrome():
     chrome_options = Options()
     chrome_options.add_argument('--disable-save-password-bubble')
@@ -55,6 +57,7 @@ def get_chrome():
     })
     chrome_driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     return chrome_driver
+
 
 def get_firefox():
     firefox_driver = webdriver.Firefox(GeckoDriverManager().install())

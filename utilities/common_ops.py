@@ -1,4 +1,5 @@
 import csv
+import time
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -20,6 +21,10 @@ def read_csv(file_name):
         for row in reader:
             data.append(row)
     return data
+
+
+def get_time_stamp():
+    return time.time()
 
 
 def get_url():
