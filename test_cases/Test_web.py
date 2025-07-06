@@ -3,6 +3,7 @@ import random
 import allure
 from utilities.common_ops import get_data
 from workflows.web_flows import WebFlows
+import test_cases.conftest as conf
 
 r_ID = random.randint(0, 5)
 
@@ -39,6 +40,17 @@ class Test_web:
     @allure.description('This test verifies the checkout process in the "Swag Labs" website.')
     def test_checkout(self):
         WebFlows.checkout_proccess("test1", "test2", "1231")
+
+
+    @allure.title('TestTBA: visual testing')
+    @allure.description('This test is for visual testing of the "Swag Labs" website.')
+    @pytest.mark.skipif(get_data('Execute_Applitools').lower() == 'no', reason="Visual testing is disabled")
+    def test_broken_user(self):
+        conf.eyes.open(self.driver, "Swag Labs", "Broken User Test",)
+        WebFlows.login_flow(get_data('Username_broken'), get_data('Password'))
+        conf.eyes.check_window("Broken User")
+
+
 
     # upcoming tests
     # def test_logout(self):

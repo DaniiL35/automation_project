@@ -6,6 +6,7 @@ from extensions.ui_actions import UiActions
 import utilities.manage_pages as page
 from extensions.Verifications import Verifications
 from utilities.common_ops import get_data as GD, read_csv as RC, For
+from applitools.selenium import Eyes
 
 
 class WebFlows:
@@ -90,6 +91,12 @@ class WebFlows:
         UiActions.click(page.checkout_page.get_continue_button())
         UiActions.click(page.overview_page.get_finish_button())
         Verifications.verify_equals(utilities.common_ops.get_url(), GD("CheckoutCompleteURL"))
+
+
+    @staticmethod
+    @allure.step("verify broken user")
+
+
 
     @staticmethod
     @allure.step("return to home page")

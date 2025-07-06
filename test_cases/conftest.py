@@ -10,26 +10,42 @@ from utilities.manage_pages import ManagePages
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from applitools.selenium import Eyes
+
 
 driver = None
 action = None
+eyes = Eyes()  # Initialize Applitools Eyes for visual testing
 
 
 @pytest.fixture(scope='class')
 def init_web_driver(request):
-    edriver = get_web_driver()
-    globals()['driver'] = EventFiringWebDriver(edriver, EventListener())
+    if get_data("Execute_Applitools").lower() == 'yes':
+        globals()['driver'] = get_web_driver()
+    else:
+        edriver = get_web_driver()
+        globals()['driver'] = EventFiringWebDriver(edriver, EventListener())
     driver.maximize_window()
     driver.implicitly_wait(int(get_data("WaitTime")))
     driver.get(get_data('URL'))
     request.cls.driver = driver
     globals()['action'] = ActionChains(driver)
     ManagePages.init_web_pages()
+
+    # applitools setup
+    if get_data("Execute_Applitools").lower() == 'yes':
+        eyes.api_key = get_data('Applitools_key')
+
     yield
     driver.close()
     driver.quit()
+    # Applitools Eyes cleanup
+    if get_data("Execute_Applitools").lower() == 'yes':
+        eyes.close()
+        eyes.abort_if_not_closed()
 
 
 def get_web_driver():
@@ -53,9 +69,9 @@ def get_chrome():
         'credentials_enable_service': False,
         'profile.password_manager_enabled': False,
         'profile.password_manager_leak_detection': False
-
     })
-    chrome_driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    service = Service(ChromeDriverManager().install())
+    chrome_driver = webdriver.Chrome(service=service, options=chrome_options)
     return chrome_driver
 
 

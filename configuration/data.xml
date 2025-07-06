@@ -8,7 +8,10 @@
     <URL>https://www.saucedemo.com/</URL>
     <Username>standard_user</Username>
     <Password>secret_sauce</Password>
+    <Username_broken>problem_user</Username_broken>
     <csvfile>../ddt/products.csv</csvfile>
+    <Execute_Applitools>yes</Execute_Applitools> <!--yes/no-->
+    <Applitools_key>898mrxdHoWNcVzt111l2I1PQpqSl107WBGSRQbQguZ9LWkRs110</Applitools_key>
 
 
 
