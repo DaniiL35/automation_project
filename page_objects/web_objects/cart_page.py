@@ -22,12 +22,14 @@ class CartPage:
         return self.driver.find_elements(cart_items[0], cart_items[1])
 
     def get_cart_item(self, index):
+        index = int(index)
         return self.get_cart_items()[index]
 
     def get_remove_buttons(self):
         return self.driver.find_elements(remove_buttons[0], remove_buttons[1])
 
     def get_remove_button(self, index):
+        index = int(index)
         return self.get_remove_buttons()[index]
 
     def get_items_names(self):

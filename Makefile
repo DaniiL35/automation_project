@@ -5,3 +5,11 @@ allure-run:
 		cd .. && \
 		allure serve allure-results \
 	)
+
+clean_run:
+	( \
+	trash ~/.wdm \
+	trash allure-results \
+	)
+
+

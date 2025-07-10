@@ -39,23 +39,28 @@ class Test_web:
     @allure.title('Test06: Checkout Process')
     @allure.description('This test verifies the checkout process in the "Swag Labs" website.')
     def test_checkout(self):
-        WebFlows.checkout_proccess("test1", "test2", "1231")
+        WebFlows.checkout_proccess(get_data("firstname"), get_data("lastname"), get_data('postalcode'))
+        WebFlows.verify_checkout_complete_page()
 
+    @allure.title('Test07: remove product from cart')
+    @allure.description('This test verifies the removal of a product from the cart in the "Swag Labs" website.')
+    def test_remove_product_from_cart(self):
+        WebFlows.add_product_to_cart(r_ID)
+        WebFlows.remove_product_from_cart(get_data("last_product_index"))
+        WebFlows.verify_cart_is_empty()
+
+    @allure.title('Test08: logout')
+    @allure.description('This test verifies the logout functionality in the "Swag Labs" website.')
+    def test_logout(self):
+        WebFlows.logout_flow()
 
     @allure.title('TestTBA: visual testing')
     @allure.description('This test is for visual testing of the "Swag Labs" website.')
     @pytest.mark.skipif(get_data('Execute_Applitools').lower() == 'no', reason="Visual testing is disabled")
     def test_broken_user(self):
-        conf.eyes.open(self.driver, "Swag Labs", "Broken User Test",)
+        conf.eyes.open(self.driver, "Swag Labs", "Broken User Test", )
         WebFlows.login_flow(get_data('Username_broken'), get_data('Password'))
         conf.eyes.check_window("Broken User")
-
-
-
-    # upcoming tests
-    # def test_logout(self):
-    # def test_login_diffrent_user
-    # def test_remove_product_from_cart
 
     # def teardown_method(self):
     # WebFlows.return_home()

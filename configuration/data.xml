@@ -9,14 +9,20 @@
     <Username>standard_user</Username>
     <Password>secret_sauce</Password>
     <Username_broken>problem_user</Username_broken>
-    <csvfile>../ddt/products.csv</csvfile>
-    <Execute_Applitools>yes</Execute_Applitools> <!--yes/no-->
+    <firstname>John</firstname>
+    <lastname>Doe</lastname>
+    <postalcode>12345</postalcode>
+    <last_product_index>0</last_product_index>
+    <products_csvfile>../ddt/products.csv</products_csvfile>
+    <msgs_csvfile>../ddt/msg.csv</msgs_csvfile>
+    <Execute_Applitools>no</Execute_Applitools> <!--yes/no-->
     <Applitools_key></Applitools_key>
 
 
 
 
     <!--URLS-->
+    <InventoryURL>https://www.saucedemo.com/inventory.html</InventoryURL>
     <CartURL>https://www.saucedemo.com/cart.html</CartURL>
     <CheckoutCompleteURL>https://www.saucedemo.com/checkout-complete.html</CheckoutCompleteURL>
 

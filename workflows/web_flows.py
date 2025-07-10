@@ -47,8 +47,8 @@ class WebFlows:
         products_names = page.web_inventory.get_products()
         products_desc = page.web_inventory.get_products_description()
         for i in range(len(products_names)):  # Iterate through products
-            expected_name = data[i]["Product Name"].strip()
-            expected_desc = data[i]["Product Description"].strip()
+            expected_name = p_data[i]["Product Name"].strip()
+            expected_desc = p_data[i]["Product Description"].strip()
             # Compare UI with CSV
             Verifications.verify_equals(expected_name, products_names[i].text.strip())
             Verifications.verify_equals(expected_desc, products_desc[i].text.strip())
@@ -58,9 +58,9 @@ class WebFlows:
     def verify_product_page_details():
         products_list = page.web_inventory.get_products()
         for i in range(len(products_list)):
-            expected_name = data[i]["Product Name"].strip()
-            expected_desc = data[i]["Product Description"].strip()
-            expected_price = data[i]["Product Price"].strip()
+            expected_name = p_data[i]["Product Name"].strip()
+            expected_desc = p_data[i]["Product Description"].strip()
+            expected_price = p_data[i]["Product Price"].strip()
             UiActions.click((products_list[i]))
             p_name = page.product_page.get_product_title().text
             p_desc = page.product_page.get_product_description().text
@@ -72,13 +72,32 @@ class WebFlows:
             products_list = page.web_inventory.get_products()
 
     @staticmethod
-    def add_and_verifiy_product_in_cart(ID):
+    @allure.step("add product to cart")
+    def add_product_to_cart(ID):
         products_list = page.web_inventory.get_products()
         UiActions.click((products_list[ID]))
         UiActions.click(page.product_page.get_buy_button())
+
+    @staticmethod
+    @allure.step("remove product from cart")
+    def remove_product_from_cart(ID):
+        UiActions.click(page.web_upper_menu.get_cart_icon())
+        UiActions.click(page.cart_page.get_remove_button(ID))
+
+    @staticmethod
+    @allure.step("add and verify product in cart")
+    def add_and_verifiy_product_in_cart(ID):
+        WebFlows.add_product_to_cart(ID)
         UiActions.click(page.web_upper_menu.get_cart_icon())
         names = page.cart_page.get_items_names()
-        Verifications.verify_equals(names[0].text, data[ID]["Product Name"].strip())
+        Verifications.verify_equals(names[0].text, p_data[ID]["Product Name"].strip())
+
+    @staticmethod
+    @allure.step("verify cart is empty")
+    def verify_cart_is_empty():
+        if utilities.common_ops.get_url() != GD('CartURL'):
+            UiActions.click(page.web_upper_menu.get_cart_icon())
+        Verifications.verify_equals(len(page.cart_page.get_cart_items()), 0)
 
     @staticmethod
     @allure.step("checkout process")
@@ -92,11 +111,22 @@ class WebFlows:
         UiActions.click(page.overview_page.get_finish_button())
         Verifications.verify_equals(utilities.common_ops.get_url(), GD("CheckoutCompleteURL"))
 
+    @staticmethod
+    @allure.step("verify checkout complete page")
+    def verify_checkout_complete_page():
+        title = page.checkout_complete_page.get_title().text
+        message = page.checkout_complete_page.get_order_confirmation_message().text
+        Verifications.soft_assert_equals(title, msg_data["OrderPlaced"])
+        Verifications.soft_assert_equals(message, msg_data["OrderDispatched"])
+        UiActions.click(page.checkout_complete_page.get_back_home_button())
+        Verifications.soft_assert_equals(utilities.common_ops.get_url(), GD("InventoryURL"))
 
     @staticmethod
-    @allure.step("verify broken user")
-
-
+    @staticmethod
+    @allure.step("logout from the website")
+    def logout_flow():
+        UiActions.click(page.web_upper_menu.get_burger_menu())
+        UiActions.click(page.web_upper_menu.get_logout())
 
     @staticmethod
     @allure.step("return to home page")
@@ -107,4 +137,6 @@ class WebFlows:
         time.sleep(2)
 
 
-data = RC(GD("csvfile"))
+p_data = RC(GD("products_csvfile"))
+raw_msg_data = RC(GD("msgs_csvfile"))
+msg_data = {row["Action"]: row["Message"] for row in raw_msg_data}

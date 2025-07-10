@@ -1,4 +1,5 @@
 import test_cases.conftest
+from page_objects.web_objects.checkout_complete_page import CheckoutCompletePage
 from page_objects.web_objects.inventory_page import InventoryPage
 from page_objects.web_objects.login_page import LoginPage
 from page_objects.web_objects.upper_menu_page import UppermenuPage
@@ -15,6 +16,7 @@ product_page = None
 cart_page = None
 checkout_page = None
 overview_page = None
+checkout_complete_page = None
 
 
 class ManagePages:
@@ -28,4 +30,4 @@ class ManagePages:
         globals()['cart_page'] = CartPage(test_cases.conftest.driver)
         globals()['checkout_page'] = CheckoutPage(test_cases.conftest.driver)
         globals()['overview_page'] = OverviewPage(test_cases.conftest.driver)
-
+        globals()['checkout_complete_page'] = CheckoutCompletePage(test_cases.conftest.driver)
