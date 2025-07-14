@@ -1,4 +1,3 @@
-import time
 import allure
 import page_objects.web_objects.inventory_page as inv_pg
 import utilities.common_ops
@@ -6,7 +5,6 @@ from extensions.ui_actions import UiActions
 import utilities.manage_pages as page
 from extensions.Verifications import Verifications
 from utilities.common_ops import get_data as GD, read_csv as RC, For
-from applitools.selenium import Eyes
 
 
 class WebFlows:
@@ -134,7 +132,6 @@ class WebFlows:
         UiActions.click(page.web_upper_menu.get_burger_menu())
         UiActions.click(page.web_upper_menu.get_all_items())
         UiActions.click(page.web_upper_menu.get_close_button())
-        time.sleep(2)
 
 
 p_data = RC(GD("products_csvfile"))

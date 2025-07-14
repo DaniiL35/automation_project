@@ -50,3 +50,17 @@ def wait(for_element, elem):
 class For:
     ELEMENT_EXIST = 'element_exist'
     ELEMENT_DISPLAYED = 'element_displayed'
+
+
+# enum for save options
+class save:
+    Yes = 'yes'
+    No = 'no'
+
+
+# enum for swipe directions
+class direction:
+    left = 'left'
+    right = 'right'
+    up = 'up'
+    down = 'down'

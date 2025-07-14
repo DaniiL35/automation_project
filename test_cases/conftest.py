@@ -1,23 +1,32 @@
-import time
-
 import allure
 import pytest
+
 from selenium import webdriver
 from selenium.webdriver import ActionChains
-from utilities.common_ops import get_data, get_time_stamp
-from utilities.event_listener import EventListener
-from utilities.manage_pages import ManagePages
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from applitools.selenium import Eyes
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.pointer_input import PointerInput
+from selenium.webdriver.common.actions import interaction
 
+import appium.webdriver.webdriver
+from appium.options.ios import XCUITestOptions
+from appium.options.android import UiAutomator2Options
+
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+
+from utilities.common_ops import get_data, get_time_stamp
+from utilities.event_listener import EventListener
+from utilities.manage_pages import ManagePages
+
+from applitools.selenium import Eyes
 
 driver = None
 action = None
+mobile_size = None
 eyes = Eyes()  # Initialize Applitools Eyes for visual testing
 
 
@@ -48,6 +57,24 @@ def init_web_driver(request):
         eyes.abort_if_not_closed()
 
 
+@pytest.fixture(scope='class')
+def init_mobile_driver(request):
+    edriver = get_mobile_driver()
+    globals()['driver'] = edriver
+    driver = globals()['driver']
+    driver.implicitly_wait(int(get_data("WaitTime")))
+    request.cls.driver = driver
+
+    # Initialize W3C actions
+    finger_input = PointerInput(interaction.POINTER_TOUCH, "finger")
+    globals()['action_builder'] = ActionBuilder(driver, mouse=finger_input)
+    globals()['finger'] = finger_input
+
+    ManagePages.init_mobile_pages()
+    yield
+    driver.quit()
+
+
 def get_web_driver():
     web_driver = get_data('Browser')
     if web_driver.lower() == 'chrome':
@@ -59,6 +86,17 @@ def get_web_driver():
     else:
         driver = None
         raise Exception("Wrong Input, Unrecognized Browser")
+    return driver
+
+
+def get_mobile_driver():
+    if get_data('Mobile_device').lower() == 'android':
+        driver = get_android(get_data('UDID'))
+    elif get_data('Mobile_device').lower() == 'ios':
+        driver = get_ios(get_data('UDID'))
+    else:
+        driver = None
+        raise Exception("Wrong Input, Unrecognized mobile device")
     return driver
 
 
@@ -85,6 +123,33 @@ def get_edge():
     return edge_driver
 
 
+def get_android(UDID):
+    options = UiAutomator2Options()
+    options.set_capability("udid", UDID)
+    options.set_capability("appPackage", get_data('App_Package'))
+    options.set_capability("appActivity", get_data('App_Activity'))
+    options.set_capability("platformName", "Android")
+
+    android_driver = appium.webdriver.Remote(
+        command_executor=get_data("Appium_server"),
+        options=options
+    )
+    return android_driver
+
+
+def get_ios(UDID):
+    options = XCUITestOptions()
+    options.set_capability("udid", UDID)
+    options.set_capability("bundleId", get_data('Bundle_id'))
+    options.set_capability("platformName", "iOS")
+
+    ios_driver = appium.webdriver.Remote(
+        command_executor=get_data("Appium_server"),
+        options=options
+    )
+    return ios_driver
+
+
 # catch exection and take screenshot
 def pytest_exception_interact(node, call, report):
     if report.failed:
@@ -95,3 +160,19 @@ def pytest_exception_interact(node, call, report):
                 name=f"screenshot_{get_time_stamp()}",
                 attachment_type=allure.attachment_type.PNG
             )
+
+
+def create_new_finger(name):
+    return PointerInput(interaction.POINTER_TOUCH, name)
+
+
+def create_action_builder(driver, finger1, finger2):
+    builder = ActionBuilder(driver)
+    builder.add_pointer_input(finger1)
+    builder.add_pointer_input(finger2)
+
+    builder.w3c_actions = type('', (), {})()
+    builder.w3c_actions.pointer_action = finger1
+    builder.w3c_actions.pointer_action2 = finger2
+
+    return builder
