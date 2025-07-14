@@ -8,11 +8,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import os
 
-
-
-
 from pathlib import Path
 import xml.etree.ElementTree as ET
+
 
 def get_data(node_name, file_name='data.xml'):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -50,3 +48,11 @@ def wait(for_element, elem):
 class For:
     ELEMENT_EXIST = 'element_exist'
     ELEMENT_DISPLAYED = 'element_displayed'
+
+
+# enum for save options
+class save:
+    Yes = 'yes'
+    No = 'no'
+
+

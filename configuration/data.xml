@@ -19,12 +19,20 @@
     <Applitools_key></Applitools_key>
 
 
-
-
     <!--URLS-->
     <InventoryURL>https://www.saucedemo.com/inventory.html</InventoryURL>
     <CartURL>https://www.saucedemo.com/cart.html</CartURL>
     <CheckoutCompleteURL>https://www.saucedemo.com/checkout-complete.html</CheckoutCompleteURL>
+
+
+    <!--Mobile-->
+    <Mobile_device>Android</Mobile_device>      <!--Android/iOS-->
+    <UDID>RFCW60HJVYL</UDID>
+    <App_Package>com.shivgadhia.android.ukMortgageCalc</App_Package>
+    <App_Activity>.MainActivity</App_Activity>
+    <Bundle_id></Bundle_id> <!--iOS only-->
+    <Appium_server>http://localhost:4723/wd/hub</Appium_server> <!--Appium server URL-->
+    <Swipe_Duration>200</Swipe_Duration>
 
 
     <!--verification-->

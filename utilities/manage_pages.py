@@ -7,6 +7,8 @@ from page_objects.web_objects.product_page import ProductPage
 from page_objects.web_objects.cart_page import CartPage
 from page_objects.web_objects.checkout_page import CheckoutPage
 from page_objects.web_objects.overview_page import OverviewPage
+from page_objects.mobile_objects.saved_page import SavedPage
+from page_objects.mobile_objects.calculator_page import CalculatorPage
 
 # web objects
 web_login = None
@@ -17,6 +19,10 @@ cart_page = None
 checkout_page = None
 overview_page = None
 checkout_complete_page = None
+
+# mobile objects
+calculator_page = None
+saved_page = None
 
 
 class ManagePages:
@@ -31,3 +37,8 @@ class ManagePages:
         globals()['checkout_page'] = CheckoutPage(test_cases.conftest.driver)
         globals()['overview_page'] = OverviewPage(test_cases.conftest.driver)
         globals()['checkout_complete_page'] = CheckoutCompletePage(test_cases.conftest.driver)
+
+    @staticmethod
+    def init_mobile_pages():
+        globals()['calculator_page'] = CalculatorPage(test_cases.conftest.driver)
+        globals()['saved_page'] = SavedPage(test_cases.conftest.driver)

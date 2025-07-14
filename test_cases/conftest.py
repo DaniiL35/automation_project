@@ -1,8 +1,9 @@
-import time
-
 import allure
 import pytest
 from selenium import webdriver
+import appium.webdriver
+from appium.webdriver.common.touch_action import TouchAction
+from appium.webdriver.common.multi_action import MultiAction
 from selenium.webdriver import ActionChains
 from utilities.common_ops import get_data, get_time_stamp
 from utilities.event_listener import EventListener
@@ -15,9 +16,11 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from applitools.selenium import Eyes
 
-
 driver = None
 action = None
+action2 = None
+m_action = None
+mobile_size = None
 eyes = Eyes()  # Initialize Applitools Eyes for visual testing
 
 
@@ -41,11 +44,25 @@ def init_web_driver(request):
 
     yield
     driver.close()
+
+
+@pytest.fixture(scope='class')
+def init_mobile_driver(request):
+    edriver = get_mobile_driver()
+    globals()['driver'] = EventFiringWebDriver(edriver, EventListener())
+    driver.implicitly_wait(int(get_data("WaitTime")))
+    request.cls.driver = driver
+    globals()['action'] = TouchAction(driver)
+    request.cls.touch = globals()['action']
+    globals()['action2'] = TouchAction(driver)
+    request.cls.touch = globals()['action2']
+    globals()['m_action'] = MultiAction(driver)
+    request.cls.touch = globals()['m_action']
+    globals()['mobile_size'] = driver.get_window_size()
+    request.cls.mobile_size = globals()['mobile_size']
+    ManagePages.init_mobile_pages()
+    yield
     driver.quit()
-    # Applitools Eyes cleanup
-    if get_data("Execute_Applitools").lower() == 'yes':
-        eyes.close()
-        eyes.abort_if_not_closed()
 
 
 def get_web_driver():
@@ -59,6 +76,17 @@ def get_web_driver():
     else:
         driver = None
         raise Exception("Wrong Input, Unrecognized Browser")
+    return driver
+
+
+def get_mobile_driver():
+    if get_data('Mobile_device').lower() == 'android':
+        driver = get_android(get_data('UDID'))
+    elif get_data('Mobile_device').lower() == 'ios':
+        driver = get_ios(get_data('UDID'))
+    else:
+        driver = None
+        raise Exception("Wrong Input, Unrecognized mobile device")
     return driver
 
 
@@ -83,6 +111,25 @@ def get_firefox():
 def get_edge():
     edge_driver = webdriver.Edge(EdgeChromiumDriverManager(log_level=20).install())  # log_level = 20 (bug fix)
     return edge_driver
+
+
+def get_android(UDID):
+    dc = {}
+    dc['udid'] = UDID
+    dc['appPackage'] = get_data('App_Package')
+    dc['appActivity'] = get_data('App_Activity')
+    dc['platformName'] = 'Android'
+    android_driver = appium.webdriver.Remote(get_data("Appium_server"), dc)
+    return android_driver
+
+
+def get_ios(UDID):
+    dc = {}
+    dc['udid'] = UDID
+    dc['bundleId'] = get_data('Bundle_id')
+    dc['platformName'] = 'iOS'
+    ios_driver = appium.webdriver.Remote(get_data("Appium_server"), dc)
+    return ios_driver
 
 
 # catch exection and take screenshot
